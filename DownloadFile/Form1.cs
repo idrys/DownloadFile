@@ -59,23 +59,37 @@ namespace DownloadFile
             Uri u = new Uri(url);
             nameFile = System.IO.Path.GetFileName(u.LocalPath);
             WebClient client = new WebClient();
-                        client.DownloadProgressChanged += new DownloadProgressChangedEventHandler(client_DownloadProgressChanged);
-                        client.DownloadFileCompleted += new AsyncCompletedEventHandler(client_DownloadFileCompleted);
-                        client.DownloadFileAsync(new Uri(url), @"d:" + System.IO.Path.GetFileName(u.LocalPath));
+            client.DownloadProgressChanged += new DownloadProgressChangedEventHandler(client_DownloadProgressChanged);
+            client.DownloadFileCompleted += new AsyncCompletedEventHandler(client_DownloadFileCompleted);
+            client.DownloadFileAsync(new Uri(url), @"d:" + System.IO.Path.GetFileName(u.LocalPath));
 
                     // });
                     // thread.Start();
                     
-                    while (!downloadComplete)
-                    {
-                        Application.DoEvents();
-                    }
+            while (!downloadComplete)
+            {
+               Application.DoEvents();
+            }
 
-                    downloadComplete = false;
+            downloadComplete = false;
+        }
 
-    
+        private void startDownloadAllNow(string url)
+        {
 
-                }
+            //Thread thread = new Thread(() =>
+            //{
+            Uri u = new Uri(url);
+            nameFile = System.IO.Path.GetFileName(u.LocalPath);
+            WebClient client = new WebClient();
+            client.DownloadProgressChanged += new DownloadProgressChangedEventHandler(client_DownloadProgressChanged);
+            client.DownloadFileCompleted += new AsyncCompletedEventHandler(client_DownloadFileCompleted);
+            client.DownloadFileAsync(new Uri(url), @"d:" + System.IO.Path.GetFileName(u.LocalPath));
+
+            // });
+            // thread.Start();
+        }
+
         void client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
         {
             
@@ -101,7 +115,13 @@ namespace DownloadFile
             });
            
         }
-      
-        
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            foreach (var url in urls)
+            {
+                startDownloadAllNow(url);
+            }
+        }
     }
 }
